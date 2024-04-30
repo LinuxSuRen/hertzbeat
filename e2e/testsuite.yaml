@@ -63,6 +63,30 @@ items:
     api: /api/monitors
   expect:
     statusCode: 401
+- name: summary
+  request:
+    api: /api/summary
+    header:
+      Authorization: Bearer {{.login.data.token}}
+  expect:
+    bodyFieldsExpect:
+      code: 0
+- name: alertSummary
+  request:
+    api: /api/alerts/summary
+    header:
+      Authorization: Bearer {{.login.data.token}}
+  expect:
+    bodyFieldsExpect:
+      code: 0
+- name: componentStatus
+  request:
+    api: /api/status/page/component
+    header:
+      Authorization: Bearer {{.login.data.token}}
+  expect:
+    bodyFieldsExpect:
+      code: 0
 - name: monitorList
   request:
     api: /api/monitors?pageIndex=0&pageSize=8
@@ -300,3 +324,35 @@ items:
     header:
       Authorization: Bearer {{.login.data.token}}
       Content-type: application/json
+
+## Assets
+- name: appstore-svg
+  request:
+    api: /assets/outline/appstore-add.svg
+  expect:
+    header:
+      Content-Type: image/svg+xml
+- name: file-search-svg
+  request:
+    api: /assets/outline/file-search.svg
+  expect:
+    header:
+      Content-Type: image/svg+xml
+- name: home-svg
+  request:
+    api: /assets/outline/home.svg
+  expect:
+    header:
+      Content-Type: image/svg+xml
+- name: mobile-svg
+  request:
+    api: /assets/outline/mobile.svg
+  expect:
+    header:
+      Content-Type: image/svg+xml
+- name: sync-svg
+  request:
+    api: /assets/outline/sync.svg
+  expect:
+    header:
+      Content-Type: image/svg+xml

@@ -24,25 +24,17 @@ then
 fi
 
 docker-compose version
-docker-compose -f "$file" up --build -d
+docker-compose -f "$file" up --build testing
+docker-compose ps -a | grep testing | grep "Exited (1)"
+if [ $? -eq 1 ]
+then
+    code=0
+    echo "success"
+else
+    code=1
+    echo "failed"
+fi
+docker-compose -f "$file" down
 
-while true
-do
-    docker-compose -f "$file" ps | grep testing
-    if [ $? -eq 1 ]
-    then
-        code=-1
-        docker-compose -f "$file" logs | grep e2e-testing
-        docker-compose -f "$file" logs | grep e2e-testing | grep Usage
-        if [ $? -eq 1 ]
-        then
-            code=0
-            echo "successed"
-        fi
-
-        docker-compose -f "$file" down
-        set -e
-        exit $code
-    fi
-    sleep 1
-done
+set -e
+exit ${code}
